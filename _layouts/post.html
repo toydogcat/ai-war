@@ -5,6 +5,9 @@
         {% include minutes-to-read.html %}
         {% include svg-icons.html %}
         {% include header.html %}
+        
+        {% assign current_lang = page.lang | default: "zh-TW" %}
+        {% assign trans = site.data.translations[current_lang] %}
 
         <section class="post {% if site.two_columns_layout %}two-columns{% else %}one-column{% endif %}">
             <article role="article" class="post-content">
@@ -32,20 +35,38 @@
                 {{ content }}
 
                 <!-- Post Navigation -->
+                {% assign posts_in_lang = site.posts | where: "lang", current_lang | reverse %}
+                {% assign prev_post = nil %}
+                {% assign next_post = nil %}
+                {% for p in posts_in_lang %}
+                    {% if p.url == page.url %}
+                        {% assign current_index = forloop.index0 %}
+                        {% assign prev_index = current_index | minus: 1 %}
+                        {% assign next_index = current_index | plus: 1 %}
+                        {% if prev_index >= 0 %}
+                            {% assign prev_post = posts_in_lang[prev_index] %}
+                        {% endif %}
+                        {% if next_index < posts_in_lang.size %}
+                            {% assign next_post = posts_in_lang[next_index] %}
+                        {% endif %}
+                        {% break %}
+                    {% endif %}
+                {% endfor %}
+
                 <div class="post-navigation" style="display: flex; justify-content: space-between; border-top: 1px solid #333; margin-top: 40px; padding-top: 20px;">
                     <div style="flex: 1;">
-                        {% if page.previous %}
-                            <a href="{{ page.previous.url | prepend: site.baseurl }}" style="text-decoration: none; color: white;">
-                                <div style="font-size: 0.8em; color: #e50914;">&laquo; 上一集 (Previous)</div>
-                                <div style="font-size: 0.9em; font-weight: bold;">{{ page.previous.title | truncate: 25 }}</div>
+                        {% if prev_post %}
+                            <a href="{{ prev_post.url | prepend: site.baseurl }}" style="text-decoration: none; color: white;">
+                                <div style="font-size: 0.8em; color: #e50914;">&laquo; {{ trans.text.prev_epi | default: "上一集" }}</div>
+                                <div style="font-size: 0.9em; font-weight: bold;">{{ prev_post.title | truncate: 25 }}</div>
                             </a>
                         {% endif %}
                     </div>
                     <div style="flex: 1; text-align: right;">
-                        {% if page.next %}
-                            <a href="{{ page.next.url | prepend: site.baseurl }}" style="text-decoration: none; color: white;">
-                                <div style="font-size: 0.8em; color: #e50914;">下一集 (Next) &raquo;</div>
-                                <div style="font-size: 0.9em; font-weight: bold;">{{ page.next.title | truncate: 25 }}</div>
+                        {% if next_post %}
+                            <a href="{{ next_post.url | prepend: site.baseurl }}" style="text-decoration: none; color: white;">
+                                <div style="font-size: 0.8em; color: #e50914;">{{ trans.text.next_epi | default: "下一集" }} &raquo;</div>
+                                <div style="font-size: 0.9em; font-weight: bold;">{{ next_post.title | truncate: 25 }}</div>
                             </a>
                         {% endif %}
                     </div>
@@ -54,10 +75,10 @@
 
             {% if site.two_columns_layout %}
                 <aside class="see-also">
-                    <h2>漫畫目錄 (Episodes)</h2>
+                    <h2>{{ trans.text.episodes | default: "漫畫目錄" }}</h2>
                     <div class="directory-list" style="max-height: 500px; overflow-y: auto;">
                         <ul>
-                            {% assign all_posts = site.posts | where_exp:"post","post.is_generated != true" | reverse %}
+                            {% assign all_posts = site.posts | where_exp:"post","post.is_generated != true" | where: "lang", current_lang | reverse %}
                             {% for p in all_posts %}
                                 <li style="margin-bottom: 8px; padding: 5px; border-radius: 4px; {% if p.url == page.url %}background-color: #e5091422; border: 1px solid #e50914;{% else %}border-bottom: 1px solid #333;{% endif %}">
                                     <a href="{{ p.url | prepend: site.baseurl }}" style="display: flex; align-items: center; text-decoration: none; color: white;">
@@ -77,7 +98,7 @@
                 </aside>
 
                 <aside class="see-also">
-                    <h2>{{ site.translations.text.see_also | default: "See also" }}</h2>
+                    <h2>{{ trans.text.see_also | default: "推薦閱讀" }}</h2>
                     <ul>
                         {% assign next_posts = site.posts | where_exp:"post","post.is_generated != true" | where_exp:"post","post.path != page.path" %}
                         {% assign shuffled_array = next_posts | shuffle %}

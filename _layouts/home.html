@@ -2,10 +2,11 @@
 layout: main
 ---
 
+{% assign current_lang = page.lang | default: "zh-TW" %}
 {% if site.paginate %}
-    {% assign posts = paginator.posts | where_exp:"post","post.is_generated != true" | reverse %}
+    {% assign posts = paginator.posts | where_exp:"post","post.is_generated != true" | where: "lang", current_lang | reverse %}
 {% else %}
-    {% assign posts = site.posts | where_exp:"post","post.is_generated != true" | reverse %}
+    {% assign posts = site.posts | where_exp:"post","post.is_generated != true" | where: "lang", current_lang | reverse %}
 {% endif %}
 
 {% if site.show_hero and paginator == nil or paginator.page == 1 %}
@@ -34,7 +35,7 @@ layout: main
                 <div class="buttons">
                     <a href="{{ featured.url | prepend: site.baseurl }}" role="button" class="button">
                         <svg><use xlink:href="#icon-read"></use></svg>
-                        <span>{{ site.translations.button.read_now | default: "Read Now" }}</span>
+                        <span>{{ site.data.translations[current_lang].button.read_now | default: "立即閱讀" }}</span>
                     </a>
                 </div>
             </div>

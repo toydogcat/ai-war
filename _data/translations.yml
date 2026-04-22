@@ -1,0 +1,22 @@
+zh-TW:
+  button:
+    read_now: "立即閱讀"
+  text:
+    see_also: "推薦閱讀"
+    episodes: "漫畫目錄"
+    prev_epi: "上一集"
+    next_epi: "下一集"
+    total_views: "總訪問量"
+    total_visitors: "訪客數"
+    lang_name: "繁體中文"
+en:
+  button:
+    read_now: "Read Now"
+  text:
+    see_also: "See also"
+    episodes: "Episodes"
+    prev_epi: "Previous"
+    next_epi: "Next"
+    total_views: "Total Views"
+    total_visitors: "Total Visitors"
+    lang_name: "English"

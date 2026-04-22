@@ -19,6 +19,15 @@
             Get this theme!
         </a>
     {% endif %}
+    
+    <div class="lang-switch" style="display: inline-block; vertical-align: middle; margin-left: 15px; font-weight: bold;">
+        {% if page.lang == 'en' %}
+            <a href="{{ site.baseurl }}/" style="color: #e50914;">中</a>
+        {% else %}
+            {% assign en_home = site.posts | where: "lang", "en" | first %}
+            <a href="{{ en_home.url | relative_url | default: '#' }}" style="color: #e50914;">EN</a>
+        {% endif %}
+    </div>
 </header>
 
 <div id="mask" class="overlay"></div>
