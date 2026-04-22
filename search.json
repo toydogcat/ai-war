@@ -832,6 +832,22 @@
       "categories" : "",
       "url"      : "/ai-war/episode-01-en/",
       "date"     : "01/01/2026"
+    } ,
+  
+    {
+      "title"    : "特別版：首支宣傳片正式公開！",
+      "tags"     : "Promo, Video, and Intro",
+      "categories" : "news",
+      "url"      : "/ai-war/episode-00/",
+      "date"     : "12/30/2025"
+    } ,
+  
+    {
+      "title"    : "Special: Official Promo Trailer Released!",
+      "tags"     : "Promo, Video, and Intro",
+      "categories" : "news",
+      "url"      : "/ai-war/episode-00-en/",
+      "date"     : "12/30/2025"
     } 
   
 ]
