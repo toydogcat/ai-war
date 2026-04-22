@@ -34,7 +34,23 @@
                 {% include pagination-post.html %}
             </article>
 
-            {% if site.two_columns_layout %}
+                <aside class="see-also">
+                    <h2>漫畫目錄 (Episodes)</h2>
+                    <div class="directory-list" style="max-height: 500px; overflow-y: auto;">
+                        <ul>
+                            {% assign all_posts = site.posts | where_exp:"post","post.is_generated != true" | reverse %}
+                            {% for p in all_posts %}
+                                <li style="margin-bottom: 10px; border-bottom: 1px solid #333; padding-bottom: 5px;">
+                                    <a href="{{ p.url | prepend: site.baseurl }}" style="display: flex; align-items: center; text-decoration: none; color: white;">
+                                        <img src="{{ p.image | relative_url }}" style="width: 50px; height: 50px; object-fit: cover; margin-right: 10px; border-radius: 4px;">
+                                        <span style="font-size: 0.9em;">{{ p.title }}</span>
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </aside>
+
                 <aside class="see-also">
                     <h2>{{ site.translations.text.see_also | default: "See also" }}</h2>
                     <ul>
