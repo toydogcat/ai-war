@@ -84,11 +84,22 @@
                                     <a href="{{ p.url | prepend: site.baseurl }}" style="display: flex; align-items: center; text-decoration: none; color: white;">
                                         <div style="position: relative; margin-right: 10px;">
                                             <img src="{{ p.image | relative_url }}" style="width: 45px; height: 45px; object-fit: cover; border-radius: 3px;">
-                                            <span style="position: absolute; bottom: 0; right: 0; background: rgba(0,0,0,0.7); font-size: 0.6em; padding: 1px 3px; border-radius: 2px;">{{ forloop.index }}</span>
+                                            {% if p.is_special %}
+                                                <span style="position: absolute; bottom: 0; right: 0; background: #e50914; font-size: 0.5em; padding: 1px 3px; border-radius: 2px; color: white;">PROMO</span>
+                                            {% else %}
+                                                {% assign epi_num = forloop.index | minus: 1 %}
+                                                <span style="position: absolute; bottom: 0; right: 0; background: rgba(0,0,0,0.7); font-size: 0.6em; padding: 1px 3px; border-radius: 2px;">{{ epi_num }}</span>
+                                            {% endif %}
                                         </div>
                                         <div style="flex: 1; min-width: 0;">
-                                            <div style="font-weight: bold; font-size: 0.8em; color: #e50914;">Episode {{ forloop.index }}</div>
-                                            <div style="font-size: 0.75em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #ccc;">{{ p.title | split: '-' | last | strip }}</div>
+                                            <div style="font-weight: bold; font-size: 0.8em; color: #e50914;">
+                                                {% if p.is_special %}
+                                                    {{ trans.text.special_promo | default: "特別版：宣傳片" }}
+                                                {% else %}
+                                                    Episode {{ epi_num }}
+                                                {% endif %}
+                                            </div>
+                                            <div style="font-size: 0.75em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #ccc;">{{ p.title | split: '：' | last | split: ':' | last | strip }}</div>
                                         </div>
                                     </a>
                                 </li>

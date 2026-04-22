@@ -9,6 +9,9 @@ zh-TW:
     total_views: "總訪問量"
     total_visitors: "訪客數"
     lang_name: "繁體中文"
+    watch_promo: "觀看宣傳片"
+    special_promo: "特別版：宣傳片"
+    play_video: "播放影片"
 en:
   button:
     read_now: "Read Now"
@@ -20,3 +23,6 @@ en:
     total_views: "Total Views"
     total_visitors: "Total Visitors"
     lang_name: "English"
+    watch_promo: "Watch Promo"
+    special_promo: "Special: Promo"
+    play_video: "Play Video"
