@@ -29,6 +29,27 @@ The [AI WAR](https://toydogcat.github.io//ai-war/ "Visit AI WAR") is a comic abo
 - **互動效果**: Vanilla JavaScript (原生腳本開發，包含影片彈窗與圖片預載功能) ⚡
 - **第三方整合**: [不蒜子 (Busuanzi)](http://busuanzi.ibruce.info/) 訪客計數器、SVG 圖示系統集
 
+## 本地開發預覽 (Local Development) 🚀
+
+為了在不 merge 到 `main` 前就能看到修改效果，建議使用 Docker 啟動本地預覽環境：
+
+### 使用 Docker 啟動 (推薦)
+
+執行以下指令啟動 Jekyll 伺服器：
+
+```bash
+docker run --rm -it \
+  -v "$PWD:/srv/jekyll" \
+  -p 4000:4000 \
+  jekyll/jekyll:4.2.2 jekyll serve
+```
+
+啟動後請訪問：👉 **[http://localhost:4000/ai-war/](http://localhost:4000/ai-war/)**
+
+> [!NOTE]
+> 第一次啟動時會下載鏡像並編譯套件，請耐心等候。之後修改檔案存檔，預覽頁面會自動更新。
+
+
 ## 未來細修 🛠️
 
 - [ ] 🎨 **形象統一化**：將所有 AI 插圖調整為一致的角色視覺風格。
