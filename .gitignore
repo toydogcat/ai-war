@@ -34,3 +34,15 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Jekyll
+_site/
+.jekyll-cache/
+.jekyll-metadata
+.sass-cache/
+
+# Ruby/Bundler
+.bundle/
+vendor/
+
+
