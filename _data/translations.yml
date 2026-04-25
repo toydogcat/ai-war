@@ -12,6 +12,10 @@ zh-TW:
     watch_promo: "觀看宣傳片"
     special_promo: "特別版：宣傳片"
     play_video: "播放影片"
+  recommendation:
+    text: "既然都看到這了，要不換一集試試？"
+    back_btn: "返回頂部"
+
 en:
   button:
     read_now: "Read Now"
@@ -26,3 +30,7 @@ en:
     watch_promo: "Watch Promo"
     special_promo: "Special: Promo"
     play_video: "Play Video"
+  recommendation:
+    text: "Why don't you read something next?"
+    back_btn: "Go back to top"
+
