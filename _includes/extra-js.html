@@ -1,0 +1,25 @@
+<script>
+/**
+ * 延遲 "下一集" 推薦列的出現時間
+ * 原始腳本在用戶滾動超過文章內容高度時就會觸發 finishedReading 事件。
+ * 此腳本通過攔截該事件，確保只有在用戶接近頁面底部時才允許觸發，
+ * 防止推薦列在閱讀過程中過早彈出遮擋內容。
+ */
+(function() {
+    var originalDispatch = document.dispatchEvent;
+    document.dispatchEvent = function(event) {
+        if (event && event.type === 'finishedReading') {
+            var scrollPos = window.pageYOffset || document.documentElement.scrollTop;
+            var windowHeight = window.innerHeight;
+            var docHeight = document.documentElement.scrollHeight;
+            
+            // 只有當用戶接近頁面底部 (剩餘 600px 以內) 時才允許顯示推薦列
+            // 這樣可以確保用戶看完文章後的「推薦閱讀」與「作者資訊」後，推薦列才出現
+            if (scrollPos + windowHeight < docHeight - 600) {
+                return; 
+            }
+        }
+        return originalDispatch.apply(this, arguments);
+    };
+})();
+</script>

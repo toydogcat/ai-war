@@ -111,10 +111,29 @@
                 <aside class="see-also">
                     <h2>{{ trans.text.see_also | default: "推薦閱讀" }}</h2>
                     <ul>
-                        {% assign next_posts = site.posts | where: "lang", current_lang | where_exp:"post","post.is_generated != true" | where_exp:"post","post.path != page.path" %}
-                        {% assign shuffled_array = next_posts | shuffle %}
+                        {% assign pure_comics = site.posts | where: "lang", current_lang | where: "is_pure_comic", true | where_exp:"post","post.path != page.path" %}
+                        {% assign other_posts = site.posts | where: "lang", current_lang | where_exp:"post","post.is_generated != true" | where_exp:"post","post.path != page.path" | where_exp:"post","post.is_pure_comic != true" %}
+                        
+                        {% assign recommended_posts = pure_comics | concat: other_posts %}
+                        {% assign shuffled_array = recommended_posts | shuffle %}
 
-                        {% for post in shuffled_array limit:3 %}
+                        {% comment %} 確保純漫畫版出現在推薦列表中 {% endcomment %}
+                        {% assign final_recommendations = "" | split: "," %}
+                        {% if pure_comics.size > 0 %}
+                            {% assign final_recommendations = final_recommendations | push: pure_comics.first %}
+                        {% endif %}
+                        
+                        {% for post in shuffled_array %}
+                            {% if final_recommendations.size < 3 %}
+                                {% unless final_recommendations contains post %}
+                                    {% assign final_recommendations = final_recommendations | push: post %}
+                                {% endunless %}
+                            {% else %}
+                                {% break %}
+                            {% endif %}
+                        {% endfor %}
+
+                        {% for post in final_recommendations %}
                             <li>
                                 <a href="{{ post.url | prepend: site.baseurl }}">
                                     {% if post.optimized_image %}

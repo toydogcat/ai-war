@@ -12,18 +12,23 @@
     </div>
     
     {% assign entries = site.posts | where: "lang", current_lang | where_exp: "item", "item.is_generated != true" | reverse %}
+    {% assign pure_comic = site.posts | where: "lang", current_lang | where: "is_pure_comic", true | first %}
     {% assign recommendation = nil %}
     
-    {% for entry in entries %}
-      {% if entry.url == page.url %}
-        {% assign offset = forloop.index0 | plus: 1 %}
-        {% assign recommendation = entries[offset] %}
-        {% if recommendation == nil %}
-          {% assign recommendation = entries[0] %}
-        {% endif %}
-        {% break %}
-      {% endif %}
-    {% endfor %}
+    {% if pure_comic and page.is_pure_comic != true %}
+        {% assign recommendation = pure_comic %}
+    {% else %}
+        {% for entry in entries %}
+          {% if entry.url == page.url %}
+            {% assign offset = forloop.index0 | plus: 1 %}
+            {% assign recommendation = entries[offset] %}
+            {% if recommendation == nil %}
+              {% assign recommendation = entries[0] %}
+            {% endif %}
+            {% break %}
+          {% endif %}
+        {% endfor %}
+    {% endif %}
 
     {% if recommendation == nil %}
         {% assign shuffled_array = entries | shuffle %}
