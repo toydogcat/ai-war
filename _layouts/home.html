@@ -9,6 +9,13 @@ layout: main
     {% assign posts = site.posts | where_exp:"post","post.is_generated != true" | where: "lang", current_lang | reverse %}
 {% endif %}
 
+{% comment %} 將純漫畫版置於 Home 的第一位 {% endcomment %}
+{% assign pure_comics = site.posts | where: "lang", current_lang | where: "is_pure_comic", true %}
+{% if pure_comics.size > 0 %}
+    {% assign others = posts | where_exp: "item", "item.is_pure_comic != true" %}
+    {% assign posts = pure_comics | concat: others %}
+{% endif %}
+
 {% if site.show_hero and paginator == nil or paginator.page == 1 %}
     {% assign offset = 1 %}
 {% else %}
