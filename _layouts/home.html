@@ -9,12 +9,12 @@ layout: main
     {% assign posts = site.posts | where_exp:"post","post.is_generated != true" | where: "lang", current_lang | reverse %}
 {% endif %}
 
-{% comment %} 將純漫畫版置於 Home 的第一位 {% endcomment %}
+{% comment %} 重新排列 Home 的順序：宣傳片(Hero) -> 純漫畫版(第一格) -> 其他集數 {% endcomment %}
+{% assign special_posts = site.posts | where: "lang", current_lang | where: "is_special", true %}
 {% assign pure_comics = site.posts | where: "lang", current_lang | where: "is_pure_comic", true %}
-{% if pure_comics.size > 0 %}
-    {% assign others = posts | where_exp: "item", "item.is_pure_comic != true" %}
-    {% assign posts = pure_comics | concat: others %}
-{% endif %}
+{% assign other_posts = posts | where_exp: "item", "item.is_special != true" | where_exp: "item", "item.is_pure_comic != true" %}
+
+{% assign posts = special_posts | concat: pure_comics | concat: other_posts %}
 
 {% if site.show_hero and paginator == nil or paginator.page == 1 %}
     {% assign offset = 1 %}

@@ -35,7 +35,12 @@
                 {{ content }}
 
                 <!-- Post Navigation -->
-                {% assign posts_in_lang = site.posts | where: "lang", current_lang | reverse %}
+                {% assign special_posts = site.posts | where: "lang", current_lang | where: "is_special", true %}
+                {% assign pure_comics = site.posts | where: "lang", current_lang | where: "is_pure_comic", true %}
+                {% assign regular_posts = site.posts | where_exp:"post","post.is_generated != true" | where: "lang", current_lang | where_exp:"post","post.is_special != true" | where_exp:"post","post.is_pure_comic != true" | reverse %}
+                
+                {% assign posts_in_lang = special_posts | concat: pure_comics | concat: regular_posts %}
+
                 {% assign prev_post = nil %}
                 {% assign next_post = nil %}
                 {% for p in posts_in_lang %}
@@ -78,7 +83,13 @@
                     <h2>{{ trans.text.episodes | default: "漫畫目錄" }}</h2>
                     <div class="directory-list" style="max-height: 500px; overflow-y: auto;">
                         <ul>
-                            {% assign all_posts = site.posts | where_exp:"post","post.is_generated != true" | where: "lang", current_lang | reverse %}
+                            {% assign special_posts = site.posts | where: "lang", current_lang | where: "is_special", true %}
+                            {% assign pure_comics = site.posts | where: "lang", current_lang | where: "is_pure_comic", true %}
+                            {% assign regular_posts = site.posts | where_exp:"post","post.is_generated != true" | where: "lang", current_lang | where_exp:"post","post.is_special != true" | where_exp:"post","post.is_pure_comic != true" | reverse %}
+                            
+                            {% assign all_posts = special_posts | concat: pure_comics | concat: regular_posts %}
+                            
+                            {% assign epi_counter = 1 %}
                             {% for p in all_posts %}
                                 <li style="margin-bottom: 8px; padding: 5px; border-radius: 4px; {% if p.url == page.url %}background-color: #e5091422; border: 1px solid #e50914;{% else %}border-bottom: 1px solid #333;{% endif %}">
                                     <a href="{{ p.url | prepend: site.baseurl }}" style="display: flex; align-items: center; text-decoration: none; color: white;">
@@ -86,17 +97,21 @@
                                             <img src="{{ p.image | relative_url }}" style="width: 45px; height: 45px; object-fit: cover; border-radius: 3px;">
                                             {% if p.is_special %}
                                                 <span style="position: absolute; bottom: 0; right: 0; background: #e50914; font-size: 0.5em; padding: 1px 3px; border-radius: 2px; color: white;">PROMO</span>
+                                            {% elsif p.is_pure_comic %}
+                                                <span style="position: absolute; bottom: 0; right: 0; background: #e50914; font-size: 0.5em; padding: 1px 3px; border-radius: 2px; color: white;">PURE</span>
                                             {% else %}
-                                                {% assign epi_num = forloop.index | minus: 1 %}
-                                                <span style="position: absolute; bottom: 0; right: 0; background: rgba(0,0,0,0.7); font-size: 0.6em; padding: 1px 3px; border-radius: 2px;">{{ epi_num }}</span>
+                                                <span style="position: absolute; bottom: 0; right: 0; background: rgba(0,0,0,0.7); font-size: 0.6em; padding: 1px 3px; border-radius: 2px;">{{ epi_counter }}</span>
                                             {% endif %}
                                         </div>
                                         <div style="flex: 1; min-width: 0;">
                                             <div style="font-weight: bold; font-size: 0.8em; color: #e50914;">
                                                 {% if p.is_special %}
                                                     {{ trans.text.special_promo | default: "特別版：宣傳片" }}
+                                                {% elsif p.is_pure_comic %}
+                                                    {{ trans.text.pure_comic_version | default: "純漫畫版" }}
                                                 {% else %}
-                                                    Episode {{ epi_num }}
+                                                    Episode {{ epi_counter }}
+                                                    {% assign epi_counter = epi_counter | plus: 1 %}
                                                 {% endif %}
                                             </div>
                                             <div style="font-size: 0.75em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #ccc;">{{ p.title | split: '：' | last | split: ':' | last | strip }}</div>
