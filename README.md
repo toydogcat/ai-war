@@ -36,6 +36,11 @@ The [AI WAR](https://toydogcat.github.io//ai-war/ "Visit AI WAR") is a comic abo
 所以我大膽預測，未來想法不值錢，草稿的產出速度會很快，但是好的想法，會很稀缺，會有專門拍精品的團隊，會把原始但是有好想法的作品拍出來。
 
 
+## ChatGPT
+
+ChatGPT 可以統一生出圖片，整體感不錯，但是要微調也是很麻煩，如果是一次性的項目，還是相當推薦嘗試的，現在裡面的純漫畫風格，就是 ChatGPT 直接產生的圖片。
+
+
 ## 本地開發預覽 (Local Development) 🚀
 
 為了在不 merge 到 `main` 前就能看到修改效果，建議使用 Docker 啟動本地預覽環境：
